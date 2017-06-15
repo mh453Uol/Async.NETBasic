@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Async.NETBasic.Models;
+using AsyncConsoleApp;
 
 namespace Async.NETBasic.Controllers
 {
     public class HomeController : Controller
     {
+        private PersonRepository personRepository = new PersonRepository();
+
         public IActionResult Index()
         {
             Stopwatch watch = new Stopwatch();
@@ -41,6 +44,21 @@ namespace Async.NETBasic.Controllers
             //Total time is 5 seconds since all start at once the longest is 5 second so its finished last
             ViewBag.WatchMillisecond = watch.ElapsedMilliseconds;
             return View("Index");
+        }
+
+        public async Task<IActionResult> People()
+        {
+            Task<List<Person>> people = personRepository.GetAsync();
+            //Once GetAsync is done then sort ..
+            await people.ContinueWith(Sort);
+
+            ViewBag.People = people.Result;
+            return View("People");
+        }
+
+        public void Sort(Task<List<Person>> people)
+        {
+            people.Result.OrderByDescending(p => p.DateOfBirth);
         }
     }
 

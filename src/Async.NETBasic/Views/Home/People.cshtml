@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Contact";
+}
+<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>
+
+@foreach(var person in ViewBag.People)
+{
+
+    <p>@person.ToString();</p>
+}

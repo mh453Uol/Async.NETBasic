@@ -12,6 +12,7 @@ namespace AsyncConsoleApp
         public static void Main(string[] args)
         {
             //GetNameAndContent();
+
         }
 
         public static string GetLongRunningName()
